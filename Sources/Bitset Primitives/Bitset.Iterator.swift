@@ -9,6 +9,8 @@
 //
 // ===----------------------------------------------------------------------===//
 
+public import Sequence_Primitives
+
 // MARK: - Sequence
 
 extension Bitset: Swift.Sequence {
@@ -17,7 +19,7 @@ extension Bitset: Swift.Sequence {
     /// Members are yielded in ascending order using Wegner/Kernighan
     /// sparse iteration (`word &= word &- 1`), giving O(popcount)
     /// complexity rather than O(universe size).
-    public struct Iterator: IteratorProtocol, Sendable {
+    public struct Iterator: Sequence.Iterator.`Protocol`, IteratorProtocol, Sendable {
         @usableFromInline
         let storage: ContiguousArray<UInt>
 

@@ -17,9 +17,15 @@ let package = Package(
             targets: ["Bitset Primitives"]
         )
     ],
+    dependencies: [
+        .package(path: "../swift-sequence-primitives"),
+    ],
     targets: [
         .target(
-            name: "Bitset Primitives"
+            name: "Bitset Primitives",
+            dependencies: [
+                .product(name: "Sequence Primitives", package: "swift-sequence-primitives"),
+            ]
         ),
         .testTarget(
             name: "Bitset Primitives Tests",
@@ -37,6 +43,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableExperimentalFeature("Lifetimes"),
+        .enableExperimentalFeature("SuppressedAssociatedTypes"),
         .strictMemorySafety()
     ]
     target.swiftSettings = (target.swiftSettings ?? []) + settings

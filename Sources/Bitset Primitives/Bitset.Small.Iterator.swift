@@ -9,6 +9,8 @@
 //
 // ===----------------------------------------------------------------------===//
 
+public import Sequence_Primitives
+
 // MARK: - Iteration
 
 extension Bitset.Small {
@@ -41,7 +43,7 @@ extension Bitset.Small {
 
 extension Bitset.Small: Swift.Sequence {
     /// An iterator over the members of a small bitset.
-    public struct Iterator: IteratorProtocol {
+    public struct Iterator: Sequence.Iterator.`Protocol`, IteratorProtocol {
         @usableFromInline
         let inlineStorage: InlineArray<inlineWordCount, UInt>
 
