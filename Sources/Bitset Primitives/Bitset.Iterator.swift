@@ -40,6 +40,31 @@ extension Bitset: Swift.Sequence {
             self.currentWord = storage.isEmpty ? 0 : storage[0]
         }
 
+        @usableFromInline
+        var _element: Int? = nil
+
+        @_lifetime(&self)
+        @inlinable
+        public mutating func nextSpan(maximumCount: Cardinal) -> Span<Int> {
+            let ptr = unsafe withUnsafeMutablePointer(to: &_element) { p in
+                unsafe UnsafePointer<Int>(
+                    unsafe UnsafeRawPointer(p).assumingMemoryBound(to: Int.self)
+                )
+            }
+            guard maximumCount > .zero else {
+                let span = unsafe Span(_unsafeStart: ptr, count: 0)
+                return unsafe _overrideLifetime(span, mutating: &self)
+            }
+            guard let value = next() else {
+                let span = unsafe Span(_unsafeStart: ptr, count: 0)
+                return unsafe _overrideLifetime(span, mutating: &self)
+            }
+            _element = value
+            let span = unsafe Span(_unsafeStart: ptr, count: 1)
+            return unsafe _overrideLifetime(span, mutating: &self)
+        }
+
+        @_lifetime(self: immortal)
         @inlinable
         public mutating func next() -> Int? {
             while currentWord == 0 {
