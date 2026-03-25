@@ -104,7 +104,6 @@ extension Bitset.Small: Swift.Sequence {
             return unsafe _overrideLifetime(span, mutating: &self)
         }
 
-        @_lifetime(self: immortal)
         @inlinable
         public mutating func next() -> Int? {
             while currentWord == 0 {
