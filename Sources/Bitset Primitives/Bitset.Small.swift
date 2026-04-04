@@ -375,7 +375,7 @@ extension Bitset.Small: Hashable {
 
 extension Bitset.Small: CustomStringConvertible {
     public var description: String {
-        let elements = Swift.Array(self.prefix(10))
+        let elements = Array(self.prefix(10))
         let suffix = count > 10 ? ", ..." : ""
         let spilledMarker = isSpilled ? " (spilled)" : ""
         return "Bitset.Small<\(inlineWordCount)>({\(elements.map(String.init).joined(separator: ", "))\(suffix)})\(spilledMarker)"

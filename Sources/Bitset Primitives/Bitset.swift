@@ -239,7 +239,7 @@ extension Bitset: Hashable {
 
 extension Bitset: CustomStringConvertible {
     public var description: String {
-        let elements = Swift.Array(self.prefix(10))
+        let elements = Array(self.prefix(10))
         let suffix = count > 10 ? ", ..." : ""
         return "Bitset({\(elements.map(String.init).joined(separator: ", "))\(suffix)})"
     }
