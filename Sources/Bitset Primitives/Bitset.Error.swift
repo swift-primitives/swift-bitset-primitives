@@ -24,9 +24,13 @@ public enum __BitsetError: Swift.Error, Sendable, Equatable {
 
     /// Bounds violation payload.
     public struct Bounds: Sendable, Equatable {
+        /// The member whose access fell outside the valid range.
         public let member: Int
+
+        /// The set capacity in effect when the access was attempted.
         public let capacity: Int
 
+        /// Creates a bounds-violation payload.
         @inlinable
         public init(member: Int, capacity: Int) {
             self.member = member
@@ -36,6 +40,7 @@ public enum __BitsetError: Swift.Error, Sendable, Equatable {
 
     /// Invalid capacity payload.
     public struct InvalidCapacity: Sendable, Equatable {
+        /// Creates an invalid-capacity payload.
         @inlinable
         public init() {}
     }

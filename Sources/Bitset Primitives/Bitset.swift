@@ -23,8 +23,8 @@
 /// - ``Bitset``: Dynamically-growing storage (this type)
 /// - ``Bitset/Fixed``: Fixed-capacity, throws on overflow
 /// - ``Bitset/Static``: Zero-allocation inline storage with compile-time capacity
-/// - ``Bitset/Small``: Inline storage with automatic spill to heap
 public struct Bitset: Sendable {
+    /// The number of bits in a single storage word.
     @inlinable
     public static var bitsPerWord: Int { UInt.bitWidth }
 
@@ -34,12 +34,17 @@ public struct Bitset: Sendable {
     @usableFromInline
     var storedCapacity: Int
 
+    /// Creates an empty bitset with no reserved capacity.
     @inlinable
     public init() {
         self.storage = []
         self.storedCapacity = 0
     }
 
+    /// Creates a bitset with storage pre-allocated for members in `0..<capacity`.
+    ///
+    /// - Parameter capacity: The number of member slots to reserve; must be non-negative.
+    /// - Throws: `Bitset.Error.invalidCapacity` when `capacity` is negative.
     @inlinable
     public init(capacity: Int) throws(__BitsetError) {
         guard capacity >= 0 else {
@@ -61,9 +66,11 @@ public struct Bitset: Sendable {
 // MARK: - Properties
 
 extension Bitset {
+    /// The number of member slots currently allocated.
     @inlinable
     public var capacity: Int { storedCapacity }
 
+    /// The number of members in the set.
     @inlinable
     public var count: Int {
         var total = 0
@@ -73,6 +80,7 @@ extension Bitset {
         return total
     }
 
+    /// A Boolean value indicating whether the set contains no members.
     @inlinable
     public var isEmpty: Bool {
         for word in storage {
@@ -88,6 +96,7 @@ extension Bitset {
 // MARK: - Membership
 
 extension Bitset {
+    /// Returns whether the set contains the given member.
     @inlinable
     public func contains(_ member: Int) -> Bool {
         guard member >= 0 && member < capacity else { return false }
@@ -101,6 +110,11 @@ extension Bitset {
 // MARK: - Mutation
 
 extension Bitset {
+    /// Inserts a member into the set, growing storage as needed.
+    ///
+    /// - Parameter member: The non-negative integer to insert.
+    /// - Returns: `true` if the member was newly inserted; `false` if it was already present.
+    /// - Throws: `Bitset.Error.bounds` when `member` is negative.
     @inlinable
     @discardableResult
     public mutating func insert(_ member: Int) throws(__BitsetError) -> Bool {
@@ -120,6 +134,11 @@ extension Bitset {
         return !wasSet
     }
 
+    /// Removes a member from the set.
+    ///
+    /// - Parameter member: The integer to remove.
+    /// - Returns: `true` if the member was present and removed; `false` otherwise.
+    /// - Throws: `Bitset.Error.bounds` when `member` is out of range.
     @inlinable
     @discardableResult
     public mutating func remove(_ member: Int) throws(__BitsetError) -> Bool {
@@ -134,6 +153,7 @@ extension Bitset {
         return wasSet
     }
 
+    /// Removes all members, leaving the allocated capacity intact.
     @inlinable
     public mutating func removeAll() {
         for i in 0..<storage.count {
@@ -207,11 +227,12 @@ extension Bitset {
     /// Creates a bitset from a sequence of integers.
     ///
     /// - Parameter members: The members to include.
+    /// - Throws: `Bitset.Error.bounds` when a member is negative.
     @inlinable
-    public init<S: Swift.Sequence>(_ members: S) where S.Element == Int {
+    public init<S: Swift.Sequence>(_ members: S) throws(__BitsetError) where S.Element == Int {
         self.init()
         for member in members {
-            try! insert(member)
+            try insert(member)
         }
     }
 }
@@ -219,6 +240,7 @@ extension Bitset {
 // MARK: - Equatable
 
 extension Bitset: Equatable {
+    /// Returns whether two bitsets contain the same members.
     @inlinable
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.storage == rhs.storage && lhs.storedCapacity == rhs.storedCapacity
@@ -228,6 +250,7 @@ extension Bitset: Equatable {
 // MARK: - Hashable
 
 extension Bitset: Hashable {
+    /// Feeds the bitset's members into the given hasher.
     @inlinable
     public func hash(into hasher: inout Hasher) {
         hasher.combine(storage)
@@ -238,8 +261,9 @@ extension Bitset: Hashable {
 // MARK: - CustomStringConvertible
 
 extension Bitset: CustomStringConvertible {
+    /// A textual representation listing up to the first ten members.
     public var description: String {
-        let elements = Swift.Array(self.prefix(10))
+        let elements = Array(self.prefix(10))
         let suffix = count > 10 ? ", ..." : ""
         return "Bitset({\(elements.map(String.init).joined(separator: ", "))\(suffix)})"
     }

@@ -24,8 +24,13 @@ extension Bitset {
         @usableFromInline
         var storage: ContiguousArray<UInt>
 
+        /// The fixed number of member slots allocated at initialization.
         public let capacity: Int
 
+        /// Creates a fixed-capacity bitset with storage for members in `0..<capacity`.
+        ///
+        /// - Parameter capacity: The number of member slots to allocate; must be non-negative.
+        /// - Throws: `Bitset.Fixed.Error.invalidCapacity` when `capacity` is negative.
         @inlinable
         public init(capacity: Int) throws(__BitsetFixedError) {
             guard capacity >= 0 else {
@@ -48,6 +53,7 @@ extension Bitset {
 // MARK: - Properties
 
 extension Bitset.Fixed {
+    /// The number of members in the set.
     @inlinable
     public var count: Int {
         var total = 0
@@ -57,6 +63,7 @@ extension Bitset.Fixed {
         return total
     }
 
+    /// A Boolean value indicating whether the set contains no members.
     @inlinable
     public var isEmpty: Bool {
         for word in storage {
@@ -116,6 +123,7 @@ extension Bitset.Fixed {
         return wasSet
     }
 
+    /// Removes all members, leaving the fixed capacity intact.
     @inlinable
     public mutating func removeAll() {
         for i in 0..<storage.count {
@@ -127,6 +135,9 @@ extension Bitset.Fixed {
 // MARK: - Iteration
 
 extension Bitset.Fixed {
+    /// Calls the given closure on each member in ascending order.
+    ///
+    /// - Parameter body: A closure invoked once with each member of the set.
     @inlinable
     public func forEach(_ body: (Int) -> Void) {
         for (wordIndex, var word) in storage.enumerated() {
@@ -145,6 +156,7 @@ extension Bitset.Fixed {
 // MARK: - Equatable
 
 extension Bitset.Fixed: Equatable {
+    /// Returns whether two fixed bitsets have equal capacity and members.
     @inlinable
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.capacity == rhs.capacity && lhs.storage == rhs.storage
@@ -154,6 +166,7 @@ extension Bitset.Fixed: Equatable {
 // MARK: - Hashable
 
 extension Bitset.Fixed: Hashable {
+    /// Feeds the set's capacity and members into the given hasher.
     @inlinable
     public func hash(into hasher: inout Hasher) {
         hasher.combine(capacity)

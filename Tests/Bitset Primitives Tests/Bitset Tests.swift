@@ -10,6 +10,7 @@
 // ===----------------------------------------------------------------------===//
 
 import Testing
+
 @testable import Bitset_Primitives
 
 @Suite("Bitset")
@@ -174,8 +175,8 @@ struct BitsetTests {
     // MARK: - Initialization
 
     @Test
-    func `Init from sequence`() {
-        let set = Bitset([1, 2, 3, 64, 65, 66])
+    func `Init from sequence`() throws {
+        let set = try Bitset([1, 2, 3, 64, 65, 66])
 
         #expect(set.count == 6)
         #expect(set.contains(1))
@@ -187,8 +188,8 @@ struct BitsetTests {
     }
 
     @Test
-    func `Init with duplicates`() {
-        let set = Bitset([1, 2, 1, 3, 2, 1])
+    func `Init with duplicates`() throws {
+        let set = try Bitset([1, 2, 1, 3, 2, 1])
         #expect(set.count == 3)
     }
 
@@ -224,9 +225,9 @@ struct BitsetTests {
     // MARK: - Set Algebra
 
     @Test
-    func `Union`() {
-        let a = Bitset([1, 2, 3])
-        let b = Bitset([3, 4, 5])
+    func `Union`() throws {
+        let a = try Bitset([1, 2, 3])
+        let b = try Bitset([3, 4, 5])
 
         let result = a.algebra.union(b)
 
@@ -239,9 +240,9 @@ struct BitsetTests {
     }
 
     @Test
-    func `Intersection`() {
-        let a = Bitset([1, 2, 3, 4])
-        let b = Bitset([3, 4, 5, 6])
+    func `Intersection`() throws {
+        let a = try Bitset([1, 2, 3, 4])
+        let b = try Bitset([3, 4, 5, 6])
 
         let result = a.algebra.intersection(b)
 
@@ -253,9 +254,9 @@ struct BitsetTests {
     }
 
     @Test
-    func `Subtracting`() {
-        let a = Bitset([1, 2, 3, 4, 5])
-        let b = Bitset([2, 4])
+    func `Subtracting`() throws {
+        let a = try Bitset([1, 2, 3, 4, 5])
+        let b = try Bitset([2, 4])
 
         let result = a.algebra.subtract(b)
 
@@ -268,9 +269,9 @@ struct BitsetTests {
     }
 
     @Test
-    func `Symmetric difference`() {
-        let a = Bitset([1, 2, 3])
-        let b = Bitset([2, 3, 4])
+    func `Symmetric difference`() throws {
+        let a = try Bitset([1, 2, 3])
+        let b = try Bitset([2, 3, 4])
 
         let result = a.algebra.symmetric.difference(b)
 
@@ -282,9 +283,9 @@ struct BitsetTests {
     }
 
     @Test
-    func `Union across word boundaries`() {
-        let a = Bitset([0, 63])
-        let b = Bitset([64, 127])
+    func `Union across word boundaries`() throws {
+        let a = try Bitset([0, 63])
+        let b = try Bitset([64, 127])
 
         let result = a.algebra.union(b)
 
@@ -296,9 +297,9 @@ struct BitsetTests {
     }
 
     @Test
-    func `Form union`() {
-        var a = Bitset([1, 2, 3])
-        let b = Bitset([3, 4, 5])
+    func `Form union`() throws {
+        var a = try Bitset([1, 2, 3])
+        let b = try Bitset([3, 4, 5])
 
         a.form { $0.union(b) }
 
@@ -310,10 +311,10 @@ struct BitsetTests {
     // MARK: - Predicates
 
     @Test
-    func `isSubset`() {
-        let small = Bitset([1, 2, 3])
-        let large = Bitset([1, 2, 3, 4, 5])
-        let disjoint = Bitset([10, 11, 12])
+    func `isSubset`() throws {
+        let small = try Bitset([1, 2, 3])
+        let large = try Bitset([1, 2, 3, 4, 5])
+        let disjoint = try Bitset([10, 11, 12])
 
         #expect(small.relation.isSubset(of: large))
         #expect(!large.relation.isSubset(of: small))
@@ -322,9 +323,9 @@ struct BitsetTests {
     }
 
     @Test
-    func `isSuperset`() {
-        let small = Bitset([1, 2, 3])
-        let large = Bitset([1, 2, 3, 4, 5])
+    func `isSuperset`() throws {
+        let small = try Bitset([1, 2, 3])
+        let large = try Bitset([1, 2, 3, 4, 5])
 
         #expect(large.relation.isSuperset(of: small))
         #expect(!small.relation.isSuperset(of: large))
@@ -332,10 +333,10 @@ struct BitsetTests {
     }
 
     @Test
-    func `isDisjoint`() {
-        let a = Bitset([1, 2, 3])
-        let b = Bitset([4, 5, 6])
-        let c = Bitset([3, 4, 5])
+    func `isDisjoint`() throws {
+        let a = try Bitset([1, 2, 3])
+        let b = try Bitset([4, 5, 6])
+        let c = try Bitset([3, 4, 5])
 
         #expect(a.relation.isDisjoint(with: b))
         #expect(!a.relation.isDisjoint(with: c))
@@ -344,10 +345,10 @@ struct BitsetTests {
     // MARK: - Equality
 
     @Test
-    func `Equality`() {
-        let a = Bitset([1, 2, 3])
-        let b = Bitset([1, 2, 3])
-        let c = Bitset([1, 2, 4])
+    func `Equality`() throws {
+        let a = try Bitset([1, 2, 3])
+        let b = try Bitset([1, 2, 3])
+        let c = try Bitset([1, 2, 4])
 
         #expect(a == b)
         #expect(a != c)
@@ -363,8 +364,8 @@ struct BitsetTests {
     // MARK: - Description
 
     @Test
-    func `Description`() {
-        let set = Bitset([1, 2, 3])
+    func `Description`() throws {
+        let set = try Bitset([1, 2, 3])
         let desc = set.description
         #expect(desc.contains("Bitset"))
         #expect(desc.contains("1"))

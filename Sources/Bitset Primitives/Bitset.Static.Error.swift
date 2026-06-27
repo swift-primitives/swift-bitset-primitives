@@ -19,9 +19,13 @@ public enum __BitsetStaticError: Swift.Error, Sendable, Equatable {
 
     /// Bounds violation payload.
     public struct Bounds: Sendable, Equatable {
+        /// The member whose access fell outside the valid range.
         public let member: Int
+
+        /// The static capacity in effect when the access was attempted.
         public let capacity: Int
 
+        /// Creates a bounds-violation payload.
         @inlinable
         public init(member: Int, capacity: Int) {
             self.member = member
@@ -31,6 +35,7 @@ public enum __BitsetStaticError: Swift.Error, Sendable, Equatable {
 
     /// Overflow payload.
     public struct Overflow: Sendable, Equatable {
+        /// Creates an overflow payload.
         @inlinable
         public init() {}
     }

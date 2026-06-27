@@ -20,12 +20,14 @@ extension Bitset {
         @usableFromInline
         static var bitsPerWord: Int { UInt.bitWidth }
 
+        /// The total number of member slots, equal to `wordCount * bitsPerWord`.
         @inlinable
         public static var capacity: Int { wordCount * bitsPerWord }
 
         @usableFromInline
         var storage: InlineArray<wordCount, UInt>
 
+        /// Creates an empty static bitset with every bit cleared.
         @inlinable
         public init() {
             self.storage = InlineArray(repeating: 0)
@@ -42,9 +44,11 @@ extension Bitset {
 // MARK: - Properties
 
 extension Bitset.Static {
+    /// The total number of member slots available in inline storage.
     @inlinable
     public var capacity: Int { Self.capacity }
 
+    /// The number of members in the set.
     @inlinable
     public var count: Int {
         var total = 0
@@ -54,6 +58,7 @@ extension Bitset.Static {
         return total
     }
 
+    /// A Boolean value indicating whether the set contains no members.
     @inlinable
     public var isEmpty: Bool {
         for i in 0..<wordCount {
@@ -113,6 +118,7 @@ extension Bitset.Static {
         return wasSet
     }
 
+    /// Removes all members, clearing every inline storage word.
     @inlinable
     public mutating func removeAll() {
         for i in 0..<wordCount {
@@ -124,6 +130,9 @@ extension Bitset.Static {
 // MARK: - Iteration
 
 extension Bitset.Static {
+    /// Calls the given closure on each member in ascending order.
+    ///
+    /// - Parameter body: A closure invoked once with each member of the set.
     @inlinable
     public func forEach(_ body: (Int) -> Void) {
         for wordIndex in 0..<wordCount {
@@ -141,6 +150,7 @@ extension Bitset.Static {
 // MARK: - Equatable
 
 extension Bitset.Static: Equatable {
+    /// Returns whether two static bitsets contain the same members.
     @inlinable
     public static func == (lhs: Self, rhs: Self) -> Bool {
         for i in 0..<wordCount {
@@ -153,6 +163,7 @@ extension Bitset.Static: Equatable {
 // MARK: - Hashable
 
 extension Bitset.Static: Hashable {
+    /// Feeds the set's members into the given hasher.
     @inlinable
     public func hash(into hasher: inout Hasher) {
         for i in 0..<wordCount {
