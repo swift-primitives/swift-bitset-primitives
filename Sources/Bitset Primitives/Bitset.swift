@@ -24,10 +24,6 @@
 /// - ``Bitset/Fixed``: Fixed-capacity, throws on overflow
 /// - ``Bitset/Static``: Zero-allocation inline storage with compile-time capacity
 public struct Bitset: Sendable {
-    /// The number of bits in a single storage word.
-    @inlinable
-    public static var bitsPerWord: Int { UInt.bitWidth }
-
     @usableFromInline
     var storage: ContiguousArray<UInt>
 
@@ -61,6 +57,12 @@ public struct Bitset: Sendable {
         self.storage = __storage
         self.storedCapacity = capacity
     }
+}
+
+extension Bitset {
+    /// The number of bits in a single storage word.
+    @inlinable
+    public static var bitsPerWord: Int { UInt.bitWidth }
 }
 
 // MARK: - Properties

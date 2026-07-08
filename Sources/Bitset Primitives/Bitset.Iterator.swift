@@ -39,27 +39,31 @@ extension Bitset: Swift.Sequence {
             self.wordIndex = 0
             self.currentWord = storage.isEmpty ? 0 : storage[0]
         }
-
-        /// Advances to and returns the next member, or `nil` when exhausted.
-        @inlinable
-        public mutating func next() -> Int? {
-            while currentWord == 0 {
-                wordIndex += 1
-                guard wordIndex < storage.count else { return nil }
-                currentWord = storage[wordIndex]
-            }
-
-            let bit = currentWord.trailingZeroBitCount
-            currentWord &= currentWord &- 1  // Clear lowest set bit
-            let member = wordIndex * UInt.bitWidth + bit
-            return member < capacity ? member : nil
-        }
     }
 
     /// Returns an iterator over the set's members in ascending order.
     @inlinable
     public func makeIterator() -> Iterator {
         Iterator(storage: storage, capacity: capacity)
+    }
+}
+
+// MARK: - Iterator Advancement
+
+extension Bitset.Iterator {
+    /// Advances to and returns the next member, or `nil` when exhausted.
+    @inlinable
+    public mutating func next() -> Int? {
+        while currentWord == 0 {
+            wordIndex += 1
+            guard wordIndex < storage.count else { return nil }
+            currentWord = storage[wordIndex]
+        }
+
+        let bit = currentWord.trailingZeroBitCount
+        currentWord &= currentWord &- 1  // Clear lowest set bit
+        let member = wordIndex * UInt.bitWidth + bit
+        return member < capacity ? member : nil
     }
 }
 

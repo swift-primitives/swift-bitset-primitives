@@ -16,7 +16,9 @@ public enum __BitsetStaticError: Swift.Error, Sendable, Equatable {
 
     /// The set is full and cannot accept more members.
     case overflow(Overflow)
+}
 
+extension __BitsetStaticError {
     /// Bounds violation payload.
     public struct Bounds: Sendable, Equatable {
         /// The member whose access fell outside the valid range.

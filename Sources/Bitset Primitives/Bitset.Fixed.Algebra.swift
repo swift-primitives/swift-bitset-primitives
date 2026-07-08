@@ -38,14 +38,16 @@ extension Bitset.Fixed {
         let capacity: Int
 
         @usableFromInline
-        static var bitsPerWord: Int { UInt.bitWidth }
-
-        @usableFromInline
         init(storage: ContiguousArray<UInt>, capacity: Int) {
             self.storage = storage
             self.capacity = capacity
         }
     }
+}
+
+extension Bitset.Fixed.Algebra {
+    @usableFromInline
+    static var bitsPerWord: Int { UInt.bitWidth }
 }
 
 // MARK: - Algebra Operations

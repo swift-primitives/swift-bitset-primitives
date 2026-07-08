@@ -38,17 +38,19 @@ extension Bitset {
         let capacity: Int
 
         @usableFromInline
-        static var bitsPerWord: Int { UInt.bitWidth }
-
-        @usableFromInline
         init(storage: ContiguousArray<UInt>, capacity: Int) {
             self.storage = storage
             self.capacity = capacity
         }
-
-        @usableFromInline
-        var wordCount: Int { storage.count }
     }
+}
+
+extension Bitset.Algebra {
+    @usableFromInline
+    static var bitsPerWord: Int { UInt.bitWidth }
+
+    @usableFromInline
+    var wordCount: Int { storage.count }
 }
 
 // MARK: - Algebra Operations

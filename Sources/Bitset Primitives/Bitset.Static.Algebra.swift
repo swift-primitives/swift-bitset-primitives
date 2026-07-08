@@ -35,13 +35,15 @@ extension Bitset.Static {
         let storage: InlineArray<wordCount, UInt>
 
         @usableFromInline
-        static var bitsPerWord: Int { UInt.bitWidth }
-
-        @usableFromInline
         init(storage: InlineArray<wordCount, UInt>) {
             self.storage = storage
         }
     }
+}
+
+extension Bitset.Static.Algebra {
+    @usableFromInline
+    static var bitsPerWord: Int { UInt.bitWidth }
 }
 
 // MARK: - Algebra Operations

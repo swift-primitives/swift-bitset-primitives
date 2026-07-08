@@ -21,7 +21,9 @@ public enum __BitsetError: Swift.Error, Sendable, Equatable {
 
     /// The specified capacity is invalid.
     case invalidCapacity(InvalidCapacity)
+}
 
+extension __BitsetError {
     /// Bounds violation payload.
     public struct Bounds: Sendable, Equatable {
         /// The member whose access fell outside the valid range.

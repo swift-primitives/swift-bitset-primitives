@@ -19,9 +19,6 @@ extension Bitset {
     /// predictable memory behavior.
     public struct Fixed: Sendable {
         @usableFromInline
-        static var bitsPerWord: Int { UInt.bitWidth }
-
-        @usableFromInline
         var storage: ContiguousArray<UInt>
 
         /// The fixed number of member slots allocated at initialization.
@@ -48,6 +45,11 @@ extension Bitset {
             self.capacity = capacity
         }
     }
+}
+
+extension Bitset.Fixed {
+    @usableFromInline
+    static var bitsPerWord: Int { UInt.bitWidth }
 }
 
 // MARK: - Properties
