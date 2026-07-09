@@ -45,7 +45,7 @@ extension BitsetVariantsBuilderTests.FixedBitset {
 
     @Test
     func `Fixed throws on out-of-range`() {
-        do {
+        do throws(__BitsetFixedError) {
             _ = try Bitset.Fixed(capacity: 8) {
                 1
                 100
