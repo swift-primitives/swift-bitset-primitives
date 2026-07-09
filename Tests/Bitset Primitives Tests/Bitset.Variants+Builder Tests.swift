@@ -13,13 +13,7 @@ import Testing
 
 @testable import Bitset_Primitives
 
-@Suite("Bitset variants + Builder")
-struct BitsetVariantsBuilderTests {
-    @Suite struct StaticBitset {}
-    @Suite struct FixedBitset {}
-}
-
-extension BitsetVariantsBuilderTests.StaticBitset {
+@Suite struct `Bitset.Static Tests` {
     @Test
     func `Static within capacity`() throws {
         let b = try Bitset.Static<2> {
@@ -32,27 +26,30 @@ extension BitsetVariantsBuilderTests.StaticBitset {
     }
 }
 
-extension BitsetVariantsBuilderTests.FixedBitset {
-    @Test
-    func `Fixed within capacity`() throws {
-        let b = try Bitset.Fixed(capacity: 16) {
-            1
-            5
-            10
-        }
-        #expect(b.contains(5))
-    }
-
-    @Test
-    func `Fixed throws on out-of-range`() {
-        do throws(__BitsetFixedError) {
-            _ = try Bitset.Fixed(capacity: 8) {
+extension Bitset.Fixed {
+    @Suite("Bitset.Fixed")
+    struct Test {
+        @Test
+        func `Fixed within capacity`() throws {
+            let b = try Bitset.Fixed(capacity: 16) {
                 1
-                100
+                5
+                10
             }
-            Issue.record("expected throw")
-        } catch {
-            // expected
+            #expect(b.contains(5))
+        }
+
+        @Test
+        func `Fixed throws on out-of-range`() {
+            do throws(__BitsetFixedError) {
+                _ = try Bitset.Fixed(capacity: 8) {
+                    1
+                    100
+                }
+                Issue.record("expected throw")
+            } catch {
+                // expected
+            }
         }
     }
 }
