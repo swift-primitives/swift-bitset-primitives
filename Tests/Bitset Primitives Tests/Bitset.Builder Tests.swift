@@ -15,17 +15,19 @@ import Testing
 
 // MARK: - Test Suite Structure
 
-@Suite("Bitset.Builder")
-struct BitsetBuilderTests {
-    @Suite struct Unit {}
-    @Suite struct EdgeCase {}
-    @Suite struct Integration {}
-    @Suite struct StaticMethods {}
+extension Bitset.Builder {
+    @Suite("Bitset.Builder")
+    struct Test {
+        @Suite struct Unit {}
+        @Suite struct EdgeCase {}
+        @Suite struct Integration {}
+        @Suite struct StaticMethods {}
+    }
 }
 
 // MARK: - Helpers
 
-extension BitsetBuilderTests {
+extension Bitset.Builder.Test {
     fileprivate static func collected(_ bitset: Bitset) -> [Int] {
         var result: [Int] = []
         for i in 0..<bitset.capacity {
@@ -39,7 +41,7 @@ extension BitsetBuilderTests {
 
 // MARK: - Unit Tests
 
-extension BitsetBuilderTests.Unit {
+extension Bitset.Builder.Test.Unit {
 
     @Test
     func `Single member`() throws {
@@ -55,7 +57,7 @@ extension BitsetBuilderTests.Unit {
             5
             10
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [1, 5, 10])
+        #expect(Bitset.Builder.Test.collected(bitset) == [1, 5, 10])
     }
 
     @Test
@@ -67,7 +69,7 @@ extension BitsetBuilderTests.Unit {
             5
             5
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [1, 5])
+        #expect(Bitset.Builder.Test.collected(bitset) == [1, 5])
         #expect(bitset.count == 2)
     }
 
@@ -95,7 +97,7 @@ extension BitsetBuilderTests.Unit {
             none
             10
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [1, 7, 10])
+        #expect(Bitset.Builder.Test.collected(bitset) == [1, 7, 10])
     }
 
     @Test
@@ -113,7 +115,7 @@ extension BitsetBuilderTests.Unit {
 
 // MARK: - Control Flow
 
-extension BitsetBuilderTests.Unit {
+extension Bitset.Builder.Test.Unit {
 
     @Test
     func `Conditional include`() throws {
@@ -125,7 +127,7 @@ extension BitsetBuilderTests.Unit {
             }
             10
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [1, 5, 10])
+        #expect(Bitset.Builder.Test.collected(bitset) == [1, 5, 10])
     }
 
     @Test
@@ -138,7 +140,7 @@ extension BitsetBuilderTests.Unit {
             }
             10
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [1, 10])
+        #expect(Bitset.Builder.Test.collected(bitset) == [1, 10])
     }
 
     @Test
@@ -148,7 +150,7 @@ extension BitsetBuilderTests.Unit {
                 i * 2
             }
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [0, 2, 4, 6, 8])
+        #expect(Bitset.Builder.Test.collected(bitset) == [0, 2, 4, 6, 8])
     }
 
     @Test
@@ -158,13 +160,13 @@ extension BitsetBuilderTests.Unit {
                 i
             }
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [0, 3, 6, 9])
+        #expect(Bitset.Builder.Test.collected(bitset) == [0, 3, 6, 9])
     }
 }
 
 // MARK: - Edge Cases
 
-extension BitsetBuilderTests.EdgeCase {
+extension Bitset.Builder.Test.EdgeCase {
 
     @Test
     func `Wide member range`() throws {
@@ -174,7 +176,7 @@ extension BitsetBuilderTests.EdgeCase {
             128
             256
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [0, 64, 128, 256])
+        #expect(Bitset.Builder.Test.collected(bitset) == [0, 64, 128, 256])
         #expect(bitset.count == 4)
     }
 
@@ -208,13 +210,13 @@ extension BitsetBuilderTests.EdgeCase {
             }
             99
         }
-        #expect(BitsetBuilderTests.collected(bitset) == [0, 1, 3, 4, 99])
+        #expect(Bitset.Builder.Test.collected(bitset) == [0, 1, 3, 4, 99])
     }
 }
 
 // MARK: - Integration
 
-extension BitsetBuilderTests.Integration {
+extension Bitset.Builder.Test.Integration {
 
     @Test
     func `Builder result accepts further inserts`() throws {
@@ -223,7 +225,7 @@ extension BitsetBuilderTests.Integration {
             2
         }
         try bitset.insert(3)
-        #expect(BitsetBuilderTests.collected(bitset) == [1, 2, 3])
+        #expect(Bitset.Builder.Test.collected(bitset) == [1, 2, 3])
     }
 
     @Test
@@ -242,7 +244,7 @@ extension BitsetBuilderTests.Integration {
 
 // MARK: - Static Method Tests
 
-extension BitsetBuilderTests.StaticMethods {
+extension Bitset.Builder.Test.StaticMethods {
 
     @Test
     func `buildExpression single member`() {

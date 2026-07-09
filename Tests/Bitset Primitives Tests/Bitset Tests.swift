@@ -13,8 +13,9 @@ import Testing
 
 @testable import Bitset_Primitives
 
-@Suite("Bitset")
-struct BitsetTests {
+extension Bitset {
+    @Suite("Bitset")
+    struct Test {
 
     // MARK: - Basic Operations
 
@@ -371,5 +372,6 @@ struct BitsetTests {
         #expect(desc.contains("1"))
         #expect(desc.contains("2"))
         #expect(desc.contains("3"))
+    }
     }
 }
