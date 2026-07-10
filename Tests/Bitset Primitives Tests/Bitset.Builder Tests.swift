@@ -19,9 +19,9 @@ extension Bitset.Builder {
     @Suite("Bitset.Builder")
     struct Test {
         @Suite struct Unit {}
-        @Suite struct EdgeCase {}
+        @Suite struct `Edge Case` {}
         @Suite struct Integration {}
-        @Suite struct StaticMethods {}
+        @Suite struct `Static Methods` {}
     }
 }
 
@@ -166,7 +166,7 @@ extension Bitset.Builder.Test.Unit {
 
 // MARK: - Edge Cases
 
-extension Bitset.Builder.Test.EdgeCase {
+extension Bitset.Builder.Test.`Edge Case` {
 
     @Test
     func `Wide member range`() throws {
@@ -244,7 +244,7 @@ extension Bitset.Builder.Test.Integration {
 
 // MARK: - Static Method Tests
 
-extension Bitset.Builder.Test.StaticMethods {
+extension Bitset.Builder.Test.`Static Methods` {
 
     @Test
     func `buildExpression single member`() {
